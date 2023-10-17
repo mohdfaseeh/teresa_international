@@ -1,3 +1,5 @@
+import Navbar from '@/components/ui/navbar/navbar';
+import ClientProvider from '@/providers/client-provider';
 import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
 
@@ -14,6 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <ClientProvider>
+        <Navbar />
+      </ClientProvider>
       <body className={fontSans.variable}>{children}</body>
     </html>
   );
