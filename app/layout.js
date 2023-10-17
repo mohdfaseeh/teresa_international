@@ -1,3 +1,4 @@
+import Footer from '@/components/ui/footer/footer';
 import Navbar from '@/components/ui/navbar/navbar';
 import ClientProvider from '@/providers/client-provider';
 import { Inter as FontSans } from 'next/font/google';
@@ -20,6 +21,9 @@ export default function RootLayout({ children }) {
         <Navbar />
       </ClientProvider>
       <body className={fontSans.variable}>{children}</body>
+      <ClientProvider>
+        <Footer />
+      </ClientProvider>
     </html>
   );
 }
