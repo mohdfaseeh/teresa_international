@@ -2,7 +2,7 @@ import { Clock3, Mail, Phone, Store } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="h-max w-full bg-muted flex items-center justify-center">
+    <footer className="mt-4 h-max w-full bg-muted flex items-center justify-center">
       <div className="w-full h-full flex flex-col items-center justify-center gap-4 px-4 sm:px-8 md:px-16 lg:px-24 py-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <div className="flex items-center space-x-2">

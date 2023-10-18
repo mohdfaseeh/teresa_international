@@ -1,12 +1,11 @@
 import Footer from '@/components/ui/footer/footer';
 import Navbar from '@/components/ui/navbar/navbar';
 import ClientProvider from '@/providers/client-provider';
-import { Inter as FontSans } from 'next/font/google';
+import { Nunito } from 'next/font/google';
 import './globals.css';
 
-export const fontSans = FontSans({
+const nunitio = Nunito({
   subsets: ['latin'],
-  variable: '--font-sans',
 });
 
 export const metadata = {
@@ -20,7 +19,7 @@ export default function RootLayout({ children }) {
       <ClientProvider>
         <Navbar />
       </ClientProvider>
-      <body className={fontSans.variable}>{children}</body>
+      <body className={nunitio.className}>{children}</body>
       <ClientProvider>
         <Footer />
       </ClientProvider>
