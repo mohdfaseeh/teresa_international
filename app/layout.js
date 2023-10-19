@@ -1,5 +1,5 @@
-import Footer from '@/components/ui/footer/footer';
-import Navbar from '@/components/ui/navbar/navbar';
+import Footer from '@/components/footer/footer';
+import Navbar from '@/components/navbar/navbar';
 import ClientProvider from '@/providers/client-provider';
 import { Nunito } from 'next/font/google';
 import './globals.css';
@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="min-h-screen">
       <ClientProvider>
         <Navbar />
       </ClientProvider>

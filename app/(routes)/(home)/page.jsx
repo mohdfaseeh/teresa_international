@@ -1,4 +1,5 @@
 import ClientProvider from '@/providers/client-provider';
+import BrandPage from './brand-page';
 import CustomersFeedback from './customers-feedback';
 import HeroCaurasel from './hero-caurasel';
 import ServicePage from './service-page';
@@ -11,6 +12,7 @@ export default function Home() {
         <HeroCaurasel />
         <WelcomePage />
         <ServicePage />
+        <BrandPage />
         <CustomersFeedback />
       </ClientProvider>
     </div>

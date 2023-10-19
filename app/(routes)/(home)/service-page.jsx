@@ -4,33 +4,24 @@ import image from '@/public/paintssas-kKXG--621x414@LiveMint_1626329037203.jpg';
 const data = [
   {
     id: 1,
-    title: 'Residential Design',
+    title: 'Import',
     image: image,
+    description:
+      'We are the best Interior designer since 1975. Interior brings 41 years of interior designs experience right to home or office. Our design professionals are equipped to help you determine the products and design that work best for our customers within the colors and lighting of your we make more than your expectation and your dream designs.',
   },
   {
     id: 2,
-    title: 'Commercial Design',
+    title: 'Export',
     image: image,
+    description:
+      'We are the best Interior designer since 1975. Interior brings 41 years of interior designs experience right to home or office. Our design professionals are equipped to help you determine the products and design that work best for our customers within the colors and lighting of your we make more than your expectation and your dream designs.',
   },
   {
     id: 3,
-    title: 'Hospitality Design',
+    title: 'Manufacturing',
     image: image,
-  },
-  {
-    id: 4,
-    title: 'Corporate Design',
-    image: image,
-  },
-  {
-    id: 5,
-    title: 'Restaurant Design',
-    image: image,
-  },
-  {
-    id: 6,
-    title: 'Insdustrial Design',
-    image: image,
+    description:
+      'We are the best Interior designer since 1975. Interior brings 41 years of interior designs experience right to home or office. Our design professionals are equipped to help you determine the products and design that work best for our customers within the colors and lighting of your we make more than your expectation and your dream designs.',
   },
 ];
 const ServicePage = () => {
