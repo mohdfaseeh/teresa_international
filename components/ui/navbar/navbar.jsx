@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import DrawerMenu from './drawer-menu';
 import UserMenu from './user-menu';
-
+import Image from 'next/image';
+import logo from '@/public/logo.jpeg';
 const routes = [
   {
     name: 'Home',
@@ -31,7 +32,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between w-full h-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-64">
         <div className="flex items-center justify-start">
           <Link href="/" className="text-xl md:text-2xl font-bold text-primary">
-            Teresa International
+            <Image src={logo} width={50} height={50} />
           </Link>
         </div>
         <div className="flex items-center justify-end h-full space-x-4">
