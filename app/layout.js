@@ -21,7 +21,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className="min-h-screen">
       <ClientProvider>
-        <Navbar />
+        <Navbar currentUser={user} />
       </ClientProvider>
       <LoginModal currentUser={user} />
       <RegisterModal currentUser={user} />

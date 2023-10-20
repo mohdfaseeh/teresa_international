@@ -1,12 +1,20 @@
 'use client';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import useLoginModal from '@/hooks/use-login-modal';
 import logo from '@/public/logo.jpeg';
 import { ShoppingBag, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import DrawerMenu from './drawer-menu';
 import UserMenu from './user-menu';
+
 const routes = [
   {
     name: 'Home',
@@ -26,9 +34,10 @@ const routes = [
   },
 ];
 
-const Navbar = () => {
+import { signOut } from 'next-auth/react';
+const Navbar = ({ currentUser }) => {
   const loginModal = useLoginModal();
-  const pathName = usePathname();
+  let user = JSON.parse(currentUser);
   return (
     <nav className="fixed inset-0 h-16 w-full bg-white flex items-center justify-center border-b z-50">
       <div className="flex items-center justify-between w-full h-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-64">
@@ -39,10 +48,33 @@ const Navbar = () => {
         </div>
         <div className="flex items-center justify-end h-full space-x-4">
           <UserMenu routes={routes} />
-          <User
-            onClick={loginModal.onOpen}
-            className={`h-full flex items-center uppercase cursor-pointer`}
-          />
+          {currentUser ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <User className={`h-full flex items-center uppercase`} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Orders</DropdownMenuItem>
+                <DropdownMenuItem>Addresses</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    signOut();
+                  }}
+                >
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <User
+              onClick={loginModal.onOpen}
+              className={`h-full flex items-center uppercase cursor-pointer`}
+            />
+          )}
           <Link href="/cart" key="Cart">
             <ShoppingBag className={`h-full flex items-center uppercase`} />
           </Link>

@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 import useRegisterModal from '@/hooks/use-register-modal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { Input } from '../ui/input';
 
@@ -31,6 +32,7 @@ const formSchema = z.object({
 });
 
 const RegisterModal = ({ currentUser }) => {
+  const router = useRouter();
   const loginState = useLoginModal();
   const registerState = useRegisterModal();
 
@@ -50,6 +52,8 @@ const RegisterModal = ({ currentUser }) => {
         if (res?.status === 201) {
           registerState.onClose();
           loginState.onOpen();
+          router.refresh();
+          form.reset();
         } else throw new Error(res?.data?.message);
       })
       .catch((err) => {

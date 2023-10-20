@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 import useRegisterModal from '@/hooks/use-register-modal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { Input } from '../ui/input';
 
@@ -30,6 +31,7 @@ const formSchema = z.object({
 });
 
 const LoginModal = ({ currentUser }) => {
+  const router = useRouter();
   const loginState = useLoginModal();
   const registerState = useRegisterModal();
 
@@ -49,7 +51,8 @@ const LoginModal = ({ currentUser }) => {
       .then((res) => {
         if (res?.ok) {
           loginState.onClose();
-          alert('Login Successfull');
+          router.refresh();
+          form.reset();
         }
       })
       .catch((err) => {
