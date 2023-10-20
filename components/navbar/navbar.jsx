@@ -1,11 +1,12 @@
 'use client';
+import useLoginModal from '@/hooks/use-login-modal';
+import logo from '@/public/logo.jpeg';
 import { ShoppingBag, User } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import DrawerMenu from './drawer-menu';
 import UserMenu from './user-menu';
-import Image from 'next/image';
-import logo from '@/public/logo.jpeg';
 const routes = [
   {
     name: 'Home',
@@ -26,6 +27,7 @@ const routes = [
 ];
 
 const Navbar = () => {
+  const loginModal = useLoginModal();
   const pathName = usePathname();
   return (
     <nav className="fixed inset-0 h-16 w-full bg-white flex items-center justify-center border-b z-50">
@@ -38,6 +40,7 @@ const Navbar = () => {
         <div className="flex items-center justify-end h-full space-x-4">
           <UserMenu routes={routes} />
           <User
+            onClick={loginModal.onOpen}
             className={`h-full flex items-center uppercase cursor-pointer`}
           />
           <Link href="/cart" key="Cart">
