@@ -65,6 +65,7 @@ const LoginModal = ({ currentUser }) => {
   if (currentUser) {
     return null;
   }
+
   return (
     <Dialog open={loginState.isOpen} onOpenChange={loginState.onClose}>
       <DialogContent className="sm:max-w-[425px]">

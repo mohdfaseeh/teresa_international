@@ -1,3 +1,4 @@
+'use client';
 import Header from '@/components/header';
 import ClientProvider from '@/providers/client-provider';
 
@@ -5,12 +6,54 @@ import image from '@/public/paintssas-kKXG--621x414@LiveMint_1626329037203.jpg';
 import { Clock3, Mail, Phone, Store } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import banner from '@/public/download.jpeg';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+const formSchema = z.object({
+  email: z.string().email('Please enter a valid email'),
+  phone: z.string().min(10, 'Please enter a valid phone number'),
+  name: z.string().min(2, 'Please enter a valid name'),
+  message: z.string().min(10, 'Please enter a valid message'),
+});
 
 const ContactPage = () => {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      phone: '',
+      name: '',
+      message: '',
+    },
+  });
+
+  const onSubmit = async (data) => {
+    await axios
+      .post('/api/contact', data)
+      .then((res) => {
+        if (res?.status === 200) {
+          alert('Your message has been sent successfully');
+          form.reset();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <ClientProvider>
       <div className="pt-16 min-h-screen">
@@ -75,13 +118,68 @@ const ContactPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col space-y-4 w-full">
-              <Input placeholder="Your Name" />
-              <Input placeholder="Your Email" />
-              <Input placeholder="Your Phone" />
-              <Textarea rows={5} placeholder="Your Message..." />
-              <Button className="w-1/2">Send Message</Button>
-            </div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-2"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Phone" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Message</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="Message" {...field} rows={5} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="text-sm flex justify-end">
+                  <Button type="submit">Send</Button>
+                </div>
+              </form>
+            </Form>
           </div>
         </div>
       </div>
