@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { cn, formatter } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 const productData = {
@@ -44,6 +45,8 @@ const productData = {
   id: 1,
 };
 const ProductDetailsPage = () => {
+  const { data } = useSession();
+  console.log(data);
   const [selectedImage, setSelectedImage] = useState(productData.image[0]);
   return (
     <div

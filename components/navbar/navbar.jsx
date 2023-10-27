@@ -34,10 +34,12 @@ const routes = [
   },
 ];
 
-import { signOut } from 'next-auth/react';
-const Navbar = ({ currentUser }) => {
+import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+const Navbar = () => {
   const loginModal = useLoginModal();
-  let user = JSON.parse(currentUser);
+  const { data } = useSession();
+  const router = useRouter();
   return (
     <nav className="fixed inset-0 h-16 w-full bg-white flex items-center justify-center border-b z-50">
       <div className="flex items-center justify-between w-full h-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-64">
@@ -48,17 +50,23 @@ const Navbar = ({ currentUser }) => {
         </div>
         <div className="flex items-center justify-end h-full space-x-4">
           <UserMenu routes={routes} />
-          {currentUser ? (
+          {data?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <User className={`h-full flex items-center uppercase`} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>{data?.user?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>Orders</DropdownMenuItem>
-                <DropdownMenuItem>Addresses</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    router.push('/address');
+                  }}
+                >
+                  Addresses
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() => {

@@ -20,15 +20,15 @@ export default async function RootLayout({ children }) {
   const user = await getCurrentUser();
   return (
     <html lang="en" suppressHydrationWarning className="min-h-screen">
-      <ClientProvider>
-        <Navbar currentUser={user} />
-      </ClientProvider>
-      <LoginModal currentUser={user} />
-      <RegisterModal currentUser={user} />
-      <body className={nunitio.className}>{children}</body>
-      <ClientProvider>
-        <Footer />
-      </ClientProvider>
+      <body className={nunitio.className}>
+        <ClientProvider session={user}>
+          <Navbar currentUser={user} />
+          <LoginModal currentUser={user} />
+          <RegisterModal currentUser={user} />
+          {children}
+          <Footer />
+        </ClientProvider>
+      </body>
     </html>
   );
 }

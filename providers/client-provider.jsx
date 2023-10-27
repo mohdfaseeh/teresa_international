@@ -1,16 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
 
-const ClientProvider = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+import { SessionProvider } from 'next-auth/react';
+import React from 'react';
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export default function Provider({ children, session }) {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
-
-  return <div>{children}</div>;
-};
-
-export default ClientProvider;
+  return <SessionProvider session={session}>{children}</SessionProvider>;
+}

@@ -18,8 +18,18 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     // This will be the user's profile picture
-    avatar: {
+    image: {
       type: String,
+    },
+    role: {
+      type: String,
+      default: 'user',
+      enum: ['user', 'admin', 'superadmin', 'support'],
+    },
+    access: {
+      type: String,
+      default: 'public',
+      enum: ['granted', 'pending', 'denied'],
     },
   },
   {
