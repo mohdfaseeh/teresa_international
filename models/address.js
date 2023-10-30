@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const addressSchema = mongoose.Schema(
   {
-    user: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
@@ -29,7 +29,7 @@ const addressSchema = mongoose.Schema(
     },
     country: {
       type: String,
-      required: true,
+      default: 'India',
     },
     postalCode: {
       type: String,
@@ -37,12 +37,15 @@ const addressSchema = mongoose.Schema(
     },
     locality: {
       type: String,
-      required: true,
     },
     isDefault: {
       type: Boolean,
-      required: true,
       default: false,
+    },
+    type: {
+      type: String,
+      enum: ['Home', 'Work', 'Other'],
+      default: 'Home',
     },
   },
   {

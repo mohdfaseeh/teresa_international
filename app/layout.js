@@ -1,4 +1,5 @@
 import Footer from '@/components/footer/footer';
+import AddressModal from '@/components/modal/address-modal';
 import LoginModal from '@/components/modal/login-modal';
 import RegisterModal from '@/components/modal/register-modal';
 import Navbar from '@/components/navbar/navbar';
@@ -25,6 +26,7 @@ export default async function RootLayout({ children }) {
           <Navbar currentUser={user} />
           <LoginModal currentUser={user} />
           <RegisterModal currentUser={user} />
+          <AddressModal />
           {children}
           <Footer />
         </ClientProvider>
