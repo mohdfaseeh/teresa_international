@@ -1,7 +1,10 @@
 import { create } from 'zustand';
 
 const useCartItems = create((set) => ({
-  items: JSON.parse(localStorage.getItem('cart')) || [],
+  items:
+    (typeof window !== 'undefined' &&
+      JSON.parse(localStorage.getItem('cart'))) ||
+    [],
   addItem: (item) =>
     set((state) =>
       localStorage.setItem('cart', JSON.stringify([...state.items, item]))
