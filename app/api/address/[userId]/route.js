@@ -119,17 +119,18 @@ export async function DELETE(req, { params: { userId } }) {
     const { id } = body;
     await connectDB();
 
-    const address = await Address.findOne({ _id: id });
+    const address = await Address.find({ _id: id });
+
+    const addresses = await Address.deleteOne({ _id: id });
 
     if (address.isDefault) {
-      await Address.updateOne(
+      await Address.update(
         { user_id: userId },
         {
           isDefault: true,
         }
       );
     }
-    const addresses = await Address.deleteOne({ _id: id });
 
     return NextResponse.json(addresses, {
       status: 200,

@@ -38,7 +38,7 @@ const AddressCard = ({
             </span>
           </div>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-2 flex-col md:flex-row">
           <Button
             variant="outline"
             size="sm"

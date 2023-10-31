@@ -48,18 +48,29 @@ const AddressModal = () => {
   const router = useRouter();
   const addressState = useAddressModal();
   const { data: user } = useSession();
+  const { initialData } = addressState;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      phone: '',
-      address: '',
-      city: '',
-      state: '',
-      pincode: '',
-      locality: '',
-      type: 'Home',
+      name: initialData?.name || '',
+      phone: initialData?.phone || '',
+      address: initialData?.address || '',
+      city: initialData?.city || '',
+      state: initialData?.stateOrProvince || '',
+      pincode: initialData?.postalCode || '',
+      locality: initialData?.locality || '',
+      type: initialData?.type || 'Home',
+    },
+    values: {
+      name: initialData?.name || '',
+      phone: initialData?.phone || '',
+      address: initialData?.address || '',
+      city: initialData?.city || '',
+      state: initialData?.stateOrProvince || '',
+      pincode: initialData?.postalCode || '',
+      locality: initialData?.locality || '',
+      type: initialData?.type || 'Home',
     },
   });
 
@@ -75,14 +86,35 @@ const AddressModal = () => {
       });
   };
 
+  const onEdit = async (data) => {
+    await axios
+      .put(`/api/address/${user?.user?.id}`, {
+        ...data,
+        _id: initialData?._id,
+      })
+      .then((res) => {
+        router.refresh();
+        addressState.onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <Dialog open={addressState.isOpen} onOpenChange={addressState.onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Address</DialogTitle>
+          <DialogTitle>{initialData?._id ? 'Edit' : 'Add'} Address</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form
+            onSubmit={
+              initialData?._id
+                ? form.handleSubmit(onEdit)
+                : form.handleSubmit(onSubmit)
+            }
+            className="space-y-2"
+          >
             <FormField
               control={form.control}
               required
@@ -219,7 +251,7 @@ const AddressModal = () => {
                 type="submit"
                 className="w-full bg-primary text-white py-2 rounded"
               >
-                Add Address
+                {initialData?._id ? 'Update' : 'Add'} Address
               </Button>
             </DialogFooter>
           </form>

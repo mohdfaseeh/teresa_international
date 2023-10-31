@@ -1,7 +1,9 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import useCartItems from '@/hooks/use-cart-items';
 import { cn, formatter } from '@/lib/utils';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const productData = {
@@ -45,8 +47,10 @@ const productData = {
   id: 1,
 };
 const ProductDetailsPage = () => {
+  const useCartItem = useCartItems();
+  const router = useRouter();
   const { data } = useSession();
-  console.log(data);
+
   const [selectedImage, setSelectedImage] = useState(productData.image[0]);
   return (
     <div
@@ -136,6 +140,10 @@ const ProductDetailsPage = () => {
             <Button
               type="button"
               className="h-14 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
+              onClick={() => {
+                useCartItem.addItem(productData);
+                router.push('/cart');
+              }}
             >
               Add to Cart
             </Button>

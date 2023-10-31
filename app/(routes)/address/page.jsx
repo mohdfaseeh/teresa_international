@@ -91,7 +91,9 @@ const AddressPage = () => {
               locality: address?.locality,
               default: address?.isDefault,
             }}
-            onEdit={() => {}}
+            onEdit={() => {
+              addressModal.onOpenWithData(address);
+            }}
             onDelete={() => handleDelete(address?._id)}
             onSetDefault={() =>
               handleSetDefault(address?._id, address?.isDefault)

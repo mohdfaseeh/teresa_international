@@ -1,6 +1,7 @@
 'use client';
 import Card from '@/components/card';
 import { Button } from '@/components/ui/button';
+import useCartItems from '@/hooks/use-cart-items';
 import { formatter } from '@/lib/utils';
 import { ShoppingBag } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -150,6 +151,7 @@ export const products = [
 ];
 const ShopPage = () => {
   const router = useRouter();
+  const useCartItem = useCartItems();
   return (
     <div className="mt-20 h-full w-full flex items-center justify-center px-2 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-48">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
@@ -171,7 +173,10 @@ const ShopPage = () => {
                 </p>
                 <Button
                   variant="icon"
-                  onClick={() => router.push(`/cart`)}
+                  onClick={() => {
+                    useCartItem.addItem(product);
+                    router.push(`/cart`);
+                  }}
                   className="bg-transparent border border-primary hover:bg-primary hover:text-white"
                 >
                   <ShoppingBag size={20} />
