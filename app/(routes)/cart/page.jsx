@@ -1,84 +1,40 @@
 'use client';
 import CartItem from '@/components/cart-item';
-import useCartItems from '@/hooks/use-cart-items';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 const CartPage = () => {
-  const useCart = useCartItems();
+  const { data: user } = useSession();
+
+  const fetchCartItems = async () => {
+    if (!user?.user?.id) return;
+    await axios.get(`api/${user?.user?.id}/cart`).then((res) => {
+      console.log(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  });
 
   return (
     <div className="mt-20 h-full w-full flex items-center justify-center px-2 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-48">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10 w-full">
         <div className="col-span-2 rounded-md flex flex-col gap-2">
+          {/* {useCart?.items?.map((item) => ( */}
           <CartItem
+            key={1}
             title={'Teresa International'}
             // image={}
             price={1000}
-            quantity={2}
+            quantity={1}
             id={1}
             onIncrement={() => {}}
             onDecrement={() => {}}
             onRemove={() => {}}
           />
-          <CartItem
-            title={'Teresa International'}
-            // image={}
-            price={1000}
-            quantity={2}
-            id={1}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
-            onRemove={() => {}}
-          />
-          <CartItem
-            title={'Teresa International'}
-            // image={}
-            price={1000}
-            quantity={2}
-            id={1}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
-            onRemove={() => {}}
-          />
-          <CartItem
-            title={'Teresa International'}
-            // image={}
-            price={1000}
-            quantity={2}
-            id={1}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
-            onRemove={() => {}}
-          />
-          <CartItem
-            title={'Teresa International'}
-            // image={}
-            price={1000}
-            quantity={2}
-            id={1}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
-            onRemove={() => {}}
-          />
-          <CartItem
-            title={'Teresa International'}
-            // image={}
-            price={1000}
-            quantity={2}
-            id={1}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
-            onRemove={() => {}}
-          />
-          <CartItem
-            title={'Teresa International'}
-            // image={}
-            price={1000}
-            quantity={2}
-            id={1}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
-            onRemove={() => {}}
-          />
+          {/* ))} */}
         </div>
         <div className="flex flex-col col-span-1 gap-4 rounded-md border p-4 text-base h-max">
           <h2 className="text-lg">Price Details</h2>

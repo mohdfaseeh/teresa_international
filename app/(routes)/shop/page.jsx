@@ -1,9 +1,10 @@
 'use client';
 import Card from '@/components/card';
 import { Button } from '@/components/ui/button';
-import useCartItems from '@/hooks/use-cart-items';
 import { formatter } from '@/lib/utils';
+import axios from 'axios';
 import { ShoppingBag } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 import banner1 from 'public/banner-1.jpg';
@@ -150,8 +151,16 @@ export const products = [
   },
 ];
 const ShopPage = () => {
+  const { data: user } = useSession();
   const router = useRouter();
-  const useCartItem = useCartItems();
+  const handleCart = async (product) => {
+    if (!user?.user?.id) return;
+    await axios.post(`api/${user?.user?.id}/cart`, {
+      productId: product._id,
+      quantity: 1,
+    });
+  };
+
   return (
     <div className="mt-20 h-full w-full flex items-center justify-center px-2 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-48">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
@@ -174,8 +183,7 @@ const ShopPage = () => {
                 <Button
                   variant="icon"
                   onClick={() => {
-                    useCartItem.addItem(product);
-                    router.push(`/cart`);
+                    handleCart(product);
                   }}
                   className="bg-transparent border border-primary hover:bg-primary hover:text-white"
                 >

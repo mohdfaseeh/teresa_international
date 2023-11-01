@@ -27,13 +27,13 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-    createdBy: {
+    created_by: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       // This will reference the User model
       ref: 'User',
     },
-    updatedBy: {
+    updated_by: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       // This will reference the User model
