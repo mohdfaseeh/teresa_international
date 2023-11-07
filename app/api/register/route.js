@@ -1,8 +1,7 @@
+import { connectDB } from '@/lib/mongodb';
+import User from '@/models/user';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
-import { connectDB } from '../../../lib/mongodb.js';
-import User from '../../../models/user.js';
-
 export async function POST(req) {
   try {
     const body = await req.json();
@@ -12,6 +11,7 @@ export async function POST(req) {
     await connectDB();
 
     const checkUser = await User.findOne({ email });
+
     if (checkUser) {
       return NextResponse.json(
         {
@@ -21,14 +21,15 @@ export async function POST(req) {
       );
     }
 
-    const user = await User.create({
+    await User.create({
       name,
       email,
       password: hashedPassword,
     });
 
-    return NextResponse.json(user, { status: 201 });
+    return NextResponse.json('User created successfully'), { status: 201 };
   } catch (error) {
+    console.log(error);
     return NextResponse.error(error);
   }
 }

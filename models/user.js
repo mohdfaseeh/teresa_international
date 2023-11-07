@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema(
     },
     access: {
       type: String,
-      default: 'public',
+      default: 'granted',
       enum: ['granted', 'pending', 'denied'],
     },
   },

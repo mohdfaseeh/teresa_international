@@ -43,7 +43,7 @@ const productData = {
   ],
   slug: 'product-title',
   category: 'Category',
-  stock: 0,
+  stock: 10,
   id: 1,
 };
 const ProductDetailsPage = () => {
@@ -144,6 +144,7 @@ const ProductDetailsPage = () => {
                 useCartItem.addItem(productData);
                 router.push('/cart');
               }}
+              disabled={productData.stock === 0}
             >
               Add to Cart
             </Button>
