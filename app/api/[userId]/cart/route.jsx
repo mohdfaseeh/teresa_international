@@ -1,23 +1,22 @@
 import { connectDB } from '@/lib/mongodb';
 import Cart from '@/models/cart';
+import Product from '@/models/product';
+import User from '@/models/user';
 import { NextResponse } from 'next/server';
 
 export async function GET(req, { params: { userId } }) {
   try {
     await connectDB();
 
-    const cart = await Cart.findOne({ user: userId });
-
-    // cart.items = await Promise.all(
-    //   cart.items.map(async (item) => {
-    //     const product = await Product.find({});
-    //     return {
-    //       _id: item._id,
-    //       product,
-    //       quantity: item.quantity,
-    //     };
-    //   })
-    // );
+    const cart = await Cart.findOne({ user: userId })
+      .populate({
+        path: 'user',
+        model: User,
+      })
+      .populate({
+        path: 'items.product',
+        model: Product,
+      });
 
     return NextResponse.json(cart, {
       status: 200,
@@ -30,7 +29,8 @@ export async function GET(req, { params: { userId } }) {
 
 export async function POST(req, { params: { userId } }) {
   try {
-    const { productId, quantity } = req.body;
+    const body = await req.json();
+    const { productId, quantity } = body;
 
     await connectDB();
 
@@ -53,7 +53,7 @@ export async function POST(req, { params: { userId } }) {
     }
 
     const existingProduct = cart.items.find(
-      (item) => item._id.toString() === productId
+      (item) => item.product.toString() === productId
     );
 
     if (existingProduct) {
@@ -78,7 +78,8 @@ export async function POST(req, { params: { userId } }) {
 
 export async function PUT(req, { params: { userId } }) {
   try {
-    const { productId, quantity } = req.body;
+    const body = await req.json();
+    const { productId, quantity } = body;
 
     await connectDB();
 
@@ -91,7 +92,7 @@ export async function PUT(req, { params: { userId } }) {
     }
 
     const existingProduct = cart.items.find(
-      (item) => item._id.toString() === productId
+      (item) => item.product.toString() === productId
     );
 
     if (existingProduct) {
@@ -111,7 +112,8 @@ export async function PUT(req, { params: { userId } }) {
 
 export async function DELETE(req, { params: { userId } }) {
   try {
-    const { productId } = req.body;
+    const body = await req.json();
+    const { productId } = body;
 
     await connectDB();
 
@@ -123,7 +125,9 @@ export async function DELETE(req, { params: { userId } }) {
       });
     }
 
-    cart.items = cart.items.filter((item) => item._id.toString() !== productId);
+    cart.items = cart.items.filter(
+      (item) => item.product.toString() !== productId
+    );
 
     await cart.save();
 

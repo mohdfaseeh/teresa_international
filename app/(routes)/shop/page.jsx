@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 import banner1 from 'public/banner-1.jpg';
+import { useEffect, useState } from 'react';
 export const products = [
   {
     id: 1,
@@ -153,6 +154,7 @@ export const products = [
 const ShopPage = () => {
   const { data: user } = useSession();
   const router = useRouter();
+  const [products, setProducts] = useState([]);
   const handleCart = async (product) => {
     if (!user?.user?.id) return;
     await axios.post(`api/${user?.user?.id}/cart`, {
@@ -161,17 +163,31 @@ const ShopPage = () => {
     });
   };
 
+  const fetchProducts = async () => {
+    await axios
+      .get('/api/products')
+      .then((res) => {
+        // console.log(res.data);
+        setProducts(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div className="mt-20 h-full w-full flex items-center justify-center px-2 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-48">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
         {products.map((product) => (
           <Card
             key={product.id}
-            title={product.title}
+            title={product.name}
             imageClassName={
               'h-60 w-full group-hover:scale-105 transition-all duration-500 bg-product'
             }
-            image={product.image}
+            image={product.image[0] || banner1}
             onClick={() => router.push(`/shop/${product.slug}`)}
             className={'space-y-1 group overflow-hidden'}
             size={'sm'}

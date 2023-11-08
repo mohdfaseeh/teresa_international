@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req, res) {
   try {
-    const body = req.json();
+    const body = await req.json();
     const {
       name,
       image,
@@ -17,9 +17,10 @@ export async function POST(req, res) {
     } = body;
 
     await connectDB();
-    const product = new Product({
+    const product = await Product.create({
       name,
       image,
+      slug: name.toLowerCase().replace(/ /g, '-'),
       category,
       description,
       price,
@@ -27,9 +28,20 @@ export async function POST(req, res) {
       created_by,
       updated_by,
     });
-    const createdProduct = await product.save();
-    return NextResponse.json(createdProduct, { status: 201 });
+    return NextResponse.json(product, { status: 201 });
   } catch (error) {
+    console.log(error);
+    return NextResponse.error(error);
+  }
+}
+
+export async function GET(req, res) {
+  try {
+    await connectDB();
+    const products = await Product.find({});
+    return NextResponse.json(products, { status: 200 });
+  } catch (error) {
+    console.log(error);
     return NextResponse.error(error);
   }
 }

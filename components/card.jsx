@@ -22,6 +22,8 @@ const Card = ({
       >
         <Image
           src={image}
+          width={size === 'sm' ? 200 : 400}
+          height={size === 'sm' ? 200 : 400}
           className={cn('w-full h-full', imageClassName)}
           objectFit="cover"
         />
