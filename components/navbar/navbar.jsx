@@ -65,7 +65,13 @@ const Navbar = () => {
                 >
                   Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem>Orders</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    router.push('/orders');
+                  }}
+                >
+                  Orders
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
                     router.push('/address');

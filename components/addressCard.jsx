@@ -9,6 +9,7 @@ const AddressCard = ({
   onEdit,
   onDelete,
   onSetDefault,
+  showDefault = true,
 }) => {
   return (
     <div
@@ -59,7 +60,7 @@ const AddressCard = ({
           >
             Delete
           </Button>
-          {!address.default && (
+          {!address.default && showDefault && (
             <Button
               variant="outline"
               size="sm"

@@ -148,9 +148,14 @@ const CartPage = () => {
           </div>
           <hr />
 
-          <button className="bg-primary text-white w-full py-2 rounded-md">
+          <Button
+            className="bg-primary text-white w-full py-2 rounded-md"
+            onClick={() => {
+              router.push('/checkout');
+            }}
+          >
             Place Order
-          </button>
+          </Button>
         </div>
       </div>
     </div>

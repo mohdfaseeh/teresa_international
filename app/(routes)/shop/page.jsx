@@ -155,12 +155,20 @@ const ShopPage = () => {
   const { data: user } = useSession();
   const router = useRouter();
   const [products, setProducts] = useState([]);
+
   const handleCart = async (product) => {
     if (!user?.user?.id) return;
-    await axios.post(`api/${user?.user?.id}/cart`, {
-      productId: product._id,
-      quantity: 1,
-    });
+    await axios
+      .post(`api/${user?.user?.id}/cart`, {
+        productId: product._id,
+        quantity: 1,
+      })
+      .then((res) => {
+        router.push('/cart');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const fetchProducts = async () => {

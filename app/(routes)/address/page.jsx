@@ -1,13 +1,13 @@
 'use client';
 import Image from 'next/image';
 
+import AddressCard from '@/components/addressCard';
 import { Button } from '@/components/ui/button';
 import useAddressModal from '@/hooks/use-address-modal';
 import banner from '@/public/download.jpeg';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import AddressCard from './addressCard';
 
 const AddressPage = () => {
   const addressModal = useAddressModal();

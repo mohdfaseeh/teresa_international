@@ -10,10 +10,16 @@ const orderSchema = mongoose.Schema(
     },
     orderItems: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        // This will reference the Product model
-        ref: 'Product',
+        quantity: {
+          type: Number,
+          required: true,
+        },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          // This will reference the Product model
+          ref: 'Product',
+        },
       },
     ],
     shippingAddress: {
@@ -24,52 +30,11 @@ const orderSchema = mongoose.Schema(
     },
     paymentMethod: {
       type: String,
+      enum: ['Stripe', 'Cash'],
       required: true,
     },
-    // This will be the payment result
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
-    },
-    // This will be the tax price
-    taxPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    // This will be the shipping price
-    shippingPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    // This will be the total price
-    totalPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
-    },
-    // This will be the order status
-    isPaid: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    // This will be the paid at date
-    paidAt: {
-      type: Date,
-    },
-    // This will be the order status
-    isDelivered: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    // This will be the delivered at date
-    deliveredAt: {
-      type: Date,
+    paymentId: {
+      type: String,
     },
   },
   {
