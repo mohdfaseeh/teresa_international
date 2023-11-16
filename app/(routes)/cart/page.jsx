@@ -1,6 +1,12 @@
 'use client';
 import CartItem from '@/components/cart-item';
 import { Button } from '@/components/ui/button';
+import {
+  handleDecrementToCart,
+  handleIncrementToCart,
+  handleRemoveItemFromCart,
+} from '@/hooks/add-to-cart';
+import useLoginModal from '@/hooks/use-login-modal';
 import { formatter } from '@/lib/utils';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
@@ -12,72 +18,121 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const router = useRouter();
   const deliverCharges = 100;
+  const loginModal = useLoginModal();
 
   const fetchCartItems = async () => {
-    if (!user?.user?.id) return;
-    await axios
-      .get(`api/${user?.user?.id}/cart`)
-      .then((res) => {
-        setCartItems(res.data.items);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!user?.user?.id) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      setCartItems(cart);
+    } else {
+      await verifyCartItems();
+      await axios
+        .get(`api/${user?.user?.id}/cart`)
+        .then((res) => {
+          setCartItems(res.data.items);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const handleIncrement = async (id) => {
-    if (!user?.user?.id) return;
-    await axios
-      .put(`api/${user?.user?.id}/cart`, {
-        productId: id,
-        quantity:
-          cartItems.find((item) => item.product._id === id).quantity + 1,
-      })
-      .then((res) => {
-        router.refresh();
-        fetchCartItems();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!user?.user?.id) {
+      handleIncrementToCart(id);
+      fetchCartItems();
+    } else
+      await axios
+        .put(`api/${user?.user?.id}/cart`, {
+          productId: id,
+          quantity:
+            cartItems.find((item) => item.product._id === id).quantity + 1,
+        })
+        .then((res) => {
+          router.refresh();
+          fetchCartItems();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   const handleDecrement = async (id) => {
-    if (!user?.user?.id) return;
-    await axios
-      .put(`api/${user?.user?.id}/cart`, {
-        productId: id,
-        quantity:
-          cartItems.find((item) => item.product._id === id).quantity - 1,
-      })
-      .then((res) => {
-        router.refresh();
-        fetchCartItems();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!user?.user?.id) {
+      handleDecrementToCart(id);
+      fetchCartItems();
+    } else
+      await axios
+        .put(`api/${user?.user?.id}/cart`, {
+          productId: id,
+          quantity:
+            cartItems.find((item) => item.product._id === id).quantity - 1,
+        })
+        .then((res) => {
+          router.refresh();
+          fetchCartItems();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   const handleRemove = async (id) => {
-    if (!user?.user?.id) return;
-    await axios
-      .delete(`api/${user?.user?.id}/cart`, {
-        data: {
-          productId: id,
-        },
-      })
-      .then((res) => {
-        router.refresh();
-        fetchCartItems();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!user?.user?.id) {
+      handleRemoveItemFromCart(id);
+      fetchCartItems();
+    } else
+      await axios
+        .delete(`api/${user?.user?.id}/cart`, {
+          data: {
+            productId: id,
+          },
+        })
+        .then((res) => {
+          router.refresh();
+          fetchCartItems();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   useEffect(() => {
     fetchCartItems();
   }, [user]);
+
+  const handleProceedToCheckout = async () => {
+    if (!user?.user?.id) {
+      loginModal.onOpen();
+    } else {
+      // verify items in cart with server
+      await verifyCartItems();
+      router.push('/checkout');
+    }
+  };
+
+  const verifyCartItems = async () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const cartItems = cart.map((item) => ({
+      product: item.product._id,
+      quantity: item.quantity,
+    }));
+
+    cartItems.forEach(async (item) => {
+      await axios
+        .post(`api/${user?.user?.id}/cart`, {
+          productId: item.product,
+          quantity: item.quantity,
+        })
+        .then((res) => {
+          handleRemoveItemFromCart(item.product);
+          fetchCartItems();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  };
 
   if (cartItems.length === 0)
     return (
@@ -151,7 +206,8 @@ const CartPage = () => {
           <Button
             className="bg-primary text-white w-full py-2 rounded-md"
             onClick={() => {
-              router.push('/checkout');
+              // router.push('/checkout');
+              handleProceedToCheckout();
             }}
           >
             Place Order

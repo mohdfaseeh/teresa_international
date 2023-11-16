@@ -36,6 +36,21 @@ const orderSchema = mongoose.Schema(
     paymentId: {
       type: String,
     },
+    deliveryStatus: {
+      type: String,
+      enum: [
+        'Shipped',
+        'Delivered',
+        'Pending',
+        'Cancelled',
+        'Returned',
+        'Refunded',
+        'Processing',
+        'Failed',
+        'Out for Delivery',
+      ],
+      default: 'Pending',
+    },
   },
   {
     timestamps: true,

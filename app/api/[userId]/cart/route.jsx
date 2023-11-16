@@ -56,6 +56,7 @@ export async function POST(req, { params: { userId } }) {
       (item) => item.product.toString() === productId
     );
 
+    // console.log('existingProduct', existingProduct);
     if (existingProduct) {
       existingProduct.quantity += quantity;
     } else {

@@ -51,7 +51,8 @@ const LoginModal = ({ currentUser }) => {
       .then((res) => {
         if (res?.ok) {
           loginState.onClose();
-          router.refresh();
+          // router.refresh();
+          window.location.reload();
           form.reset();
         }
       })

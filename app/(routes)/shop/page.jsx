@@ -1,6 +1,7 @@
 'use client';
 import Card from '@/components/card';
 import { Button } from '@/components/ui/button';
+import { addItemsToCart } from '@/hooks/add-to-cart';
 import { formatter } from '@/lib/utils';
 import axios from 'axios';
 import { ShoppingBag } from 'lucide-react';
@@ -157,18 +158,22 @@ const ShopPage = () => {
   const [products, setProducts] = useState([]);
 
   const handleCart = async (product) => {
-    if (!user?.user?.id) return;
-    await axios
-      .post(`api/${user?.user?.id}/cart`, {
-        productId: product._id,
-        quantity: 1,
-      })
-      .then((res) => {
-        router.push('/cart');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!user?.user?.id) {
+      addItemsToCart(product);
+      router.push('/cart');
+    } else {
+      await axios
+        .post(`api/${user?.user?.id}/cart`, {
+          productId: product._id,
+          quantity: 1,
+        })
+        .then((res) => {
+          router.push('/cart');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const fetchProducts = async () => {
