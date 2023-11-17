@@ -2,8 +2,9 @@ import { formatter } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-const OrderCard = ({ orders, id }) => {
+const OrderCard = ({ orders, id, orderStatus }) => {
   const router = useRouter();
+
   return (
     <div
       className="flex flex-col gap-4 w-full border rounded-md hover:shadow-md transition-shadow duration-300 ease-in-out cursor-pointer"
@@ -29,6 +30,7 @@ const OrderCard = ({ orders, id }) => {
 
               <p className="text-sm">{order.product.name}</p>
               <p className="text-sm">{formatter.format(order.product.price)}</p>
+              <p className="text-sm">{orderStatus}</p>
             </div>
           </div>
         );

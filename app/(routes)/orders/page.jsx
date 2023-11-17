@@ -52,6 +52,7 @@ const OrderPage = () => {
             orders={order.orderItems}
             shippingAddress={order.shippingAddress}
             id={order._id}
+            orderStatus={order.deliveryStatus}
           />
         ))}
       </div>
