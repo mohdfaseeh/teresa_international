@@ -167,6 +167,7 @@ const OrderStatusPage = ({ params: { orderId } }) => {
             .filter((step) => step.name === order?.deliveryStatus)
             .map((step) => (
               <div
+                key={step.name}
                 className="flex flex-col gap-4 p-4  w-full
                 "
               >
