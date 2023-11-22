@@ -1,4 +1,5 @@
 'use client';
+import ReactQuillEditor from '@/components/editor';
 import { Button } from '@/components/ui/button';
 import { addItemsToCart } from '@/hooks/add-to-cart';
 import { cn, formatter } from '@/lib/utils';
@@ -128,7 +129,11 @@ const ProductDetailsPage = ({ params: { productSlug } }) => {
               </p>
             </div>
           </div>
-          <p className="text-gray-500">{productData.description}</p>
+          {/* <p className="text-gray-500">{productData.description}</p>
+           */}
+          {/* <p dangerouslySetInnerHTML={{ __html: productData.description }}></p>
+           */}
+          <ReactQuillEditor value={productData.description} readOnly={true} />
           <div className="py-4 flex flex-col gap-4">
             <Button
               type="button"
