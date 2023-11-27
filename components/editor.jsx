@@ -1,5 +1,11 @@
 import { cn } from '@/lib/utils';
 
+import { Nunito } from 'next/font/google';
+
+const nunitio = Nunito({
+  subsets: ['latin'],
+});
+
 const ReactQuillEditor = (props) => {
   if (typeof document !== 'undefined') {
     const ReactQuill = require('react-quill');
@@ -10,7 +16,7 @@ const ReactQuillEditor = (props) => {
         <ReactQuill
           {...props}
           theme="bubble"
-          className="h-full"
+          className={cn('h-full ', nunitio.className)}
           placeholder="Write something awesome..."
           modules={{
             toolbar: {
